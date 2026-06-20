@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mara Bella Condominium — Homeowner/Resident Information</title>
+<style>
+  :root{
+    --navy:#1b2a5e;
+    --navy-deep:#11203f;
+    --gold:#a8862f;
+    --paper:#f7f5f0;
+    --line:#cfcabd;
+    --ink:#22242a;
+    --muted:#6b6f76;
+    --error:#b3261e;
+    --ok:#1e6b3b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Georgia', 'Times New Roman', serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.4;
+  }
+  .sheet{
+    max-width:840px;
+    margin:0 auto;
+    background:#fff;
+    border:1px solid var(--line);
+    box-shadow:0 2px 18px rgba(0,0,0,0.06);
+  }
+  header.brand{
+    background:var(--navy);
+    color:#fff;
+    padding:28px 36px 22px;
+    text-align:center;
+    border-bottom:4px solid var(--gold);
+  }
+  header.brand .mark{
+    font-size:30px;
+    letter-spacing:3px;
+    font-weight:bold;
+    border:2px solid #fff;
+    display:inline-block;
+    padding:6px 22px;
+    margin-bottom:6px;
+  }
+  header.brand .mark small{
+    display:block;
+    font-size:10px;
+    letter-spacing:4px;
+    font-weight:normal;
+    margin-top:2px;
+  }
+  header.brand .sub{
+    font-size:13px;
+    letter-spacing:5px;
+    margin-top:10px;
+    font-family:Arial, sans-serif;
+  }
+  .titleblock{
+    text-align:center;
+    padding:14px 20px 4px;
+    font-family:Arial, sans-serif;
+  }
+  .titleblock h1{
+    font-size:16px;
+    margin:0 0 2px;
+    letter-spacing:0.5px;
+  }
+  .titleblock h2{
+    font-size:13px;
+    margin:0 0 3px;
+    font-weight:normal;
+    letter-spacing:0.5px;
+  }
+  .titleblock .conf{
+    font-size:11px;
+    font-style:italic;
+    color:var(--muted);
+  }
+  form{
+    padding:4px 36px 28px;
+    font-family:Arial, sans-serif;
+  }
+  .section{
+    margin-top:16px;
+  }
+  .section h3{
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+    padding-bottom:3px;
+    margin:0 0 8px;
+  }
+  .row{
+    display:flex;
+    gap:14px;
+    margin-bottom:7px;
+    flex-wrap:wrap;
+  }
+  .field{
+    flex:1 1 200px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    min-width:160px;
+  }
+  .field.wide{flex:2 1 320px;}
+  .field.narrow{flex:0.6 1 110px;}
+  label{
+    font-size:10.5px;
+    font-weight:bold;
+    color:var(--navy-deep);
+    letter-spacing:0.3px;
+  }
+  label .opt{
+    color:var(--muted);
+    font-weight:normal;
+    font-style:italic;
+    text-transform:none;
+  }
+  input[type=text], input[type=email], input[type=tel], input[type=date], input[type=number], textarea, select{
+    border:none;
+    border-bottom:1.5px solid var(--ink);
+    background:transparent;
+    padding:3px 2px;
+    font-size:13px;
+    font-family:Arial, sans-serif;
+    color:var(--ink);
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:none;
+    border-bottom:2px solid var(--gold);
+    background:#fffdf6;
+  }
+  textarea{resize:vertical;min-height:40px;border:1.5px solid var(--ink);border-radius:3px;padding:6px;}
+  .pet-row, .vehicle-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:7px;
+    flex-wrap:wrap;
+  }
+  .pet-row .field, .vehicle-row .field{min-width:110px;}
+
+  /* Walkthrough scheduling block */
+  .walkthrough{
+    margin-top:18px;
+    background:#f2f5fb;
+    border:1px solid #c9d4ea;
+    border-radius:6px;
+    padding:14px 18px;
+  }
+  .walkthrough h3{
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+  }
+  .walkthrough p{
+    font-size:12.5px;
+    color:var(--ink);
+    margin:0 0 10px;
+  }
+  .move-in-row{
+    margin-bottom:10px;
+  }
+  .slot-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .slot{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:6px 8px;
+  }
+  .slot input[type=date], .slot input[type=time]{
+    border:none;
+    border-bottom:1.5px solid var(--ink);
+    flex:1;
+    min-width:120px;
+  }
+  .slot .slot-label{
+    font-size:11px;
+    color:var(--muted);
+    min-width:64px;
+    font-weight:bold;
+  }
+  .slot .remove-slot{
+    background:none;
+    border:none;
+    color:var(--error);
+    cursor:pointer;
+    font-size:18px;
+    line-height:1;
+    padding:0 4px;
+  }
+  .add-slot{
+    margin-top:10px;
+    background:none;
+    border:1.5px dashed var(--navy);
+    color:var(--navy);
+    border-radius:5px;
+    padding:7px 14px;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:Arial, sans-serif;
+  }
+  .add-slot:hover{background:#e8edf7;}
+
+  .note{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .footer-actions{
+    margin-top:20px;
+    padding-top:14px;
+    border-top:2px solid var(--navy);
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    align-items:center;
+  }
+  .status-msg{
+    font-size:12px;
+    color:var(--ok);
+    margin-right:auto;
+  }
+  .status-msg.error{color:var(--error);}
+  button.submit-btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    font-size:13px;
+    letter-spacing:0.5px;
+    border-radius:5px;
+    cursor:pointer;
+    font-family:Arial, sans-serif;
+    font-weight:bold;
+  }
+  button.submit-btn:hover{background:var(--navy-deep);}
+
+  footer.legal{
+    text-align:center;
+    padding:18px 20px 28px;
+    font-family:Arial, sans-serif;
+    font-size:11px;
+    color:var(--muted);
+  }
+  footer.legal .firm{
+    font-weight:bold;
+    text-decoration:underline;
+    color:var(--ink);
+  }
+
+  @media (max-width:600px){
+    header.brand{padding:20px 16px;}
+    form{padding:8px 18px 28px;}
+    .row, .pet-row, .vehicle-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="brand">
+    <div class="mark">EWING &amp; CLARK<small>INCORPORATED</small></div>
+    <div class="sub">PRIVATE BROKERAGE</div>
+  </header>
+
+  <div class="titleblock">
+    <h1>Mara Bella Condominium</h1>
+    <h2>Homeowner / Resident Information</h2>
+    <div class="conf">**Confidential**</div>
+  </div>
+
+  <form id="residentForm">
+
+    <div class="section">
+      <h3>General</h3>
+      <div class="row">
+        <div class="field narrow">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date">
+        </div>
+        <div class="field narrow">
+          <label for="unitNo">Unit No.</label>
+          <input type="text" id="unitNo" name="unitNo" value="304">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Owner Information</h3>
+      <div class="row">
+        <div class="field wide"><label>Name</label><input type="text" name="ownerName1" value="Kari Sulenes"></div>
+        <div class="field"><label>Phone #1</label><input type="tel" name="ownerPhone1" value="360-481-2868"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Name <span class="opt">(co-owner)</span></label><input type="text" name="ownerName2"></div>
+        <div class="field"><label>Phone #2</label><input type="tel" name="ownerPhone2"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Address</label><input type="text" name="ownerAddress" value="3 Rosemount Way, Tacoma, WA 98406"></div>
+        <div class="field"><label>Phone #3</label><input type="tel" name="ownerPhone3"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"></div>
+        <div class="field"><label>Phone #4</label><input type="tel" name="ownerPhone4"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Email</label><input type="email" name="ownerEmail1" value="ksulenes@gmail.com"></div>
+        <div class="field"><label>Email <span class="opt">(secondary)</span></label><input type="email" name="ownerEmail2"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Renter Information</h3>
+      <div class="row">
+        <div class="field wide"><label>Name</label><input type="text" name="renterName1"></div>
+        <div class="field"><label>Home Phone</label><input type="tel" name="renterHomePhone"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Name <span class="opt">(co-renter)</span></label><input type="text" name="renterName2"></div>
+        <div class="field"><label>Work Phone</label><input type="tel" name="renterWorkPhone1"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Address</label><input type="text" name="renterAddress"></div>
+        <div class="field"><label>Work Phone <span class="opt">(co-renter)</span></label><input type="tel" name="renterWorkPhone2"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"></div>
+        <div class="field"><label>Email</label><input type="email" name="renterEmail"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Cell Phone</label><input type="tel" name="renterCellPhone"></div>
+        <div class="field"><label>Fax <span class="opt">(if applicable)</span></label><input type="text" name="renterFax"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pet Information</h3>
+      <div class="pet-row">
+        <div class="field"><label>Name</label><input type="text" name="pet1Name"></div>
+        <div class="field"><label>Breed</label><input type="text" name="pet1Breed"></div>
+        <div class="field"><label>Weight</label><input type="text" name="pet1Weight"></div>
+        <div class="field"><label>Color</label><input type="text" name="pet1Color"></div>
+        <div class="field"><label>Reg. #</label><input type="text" name="pet1Reg"></div>
+      </div>
+      <div class="pet-row">
+        <div class="field"><label>Name</label><input type="text" name="pet2Name"></div>
+        <div class="field"><label>Breed</label><input type="text" name="pet2Breed"></div>
+        <div class="field"><label>Weight</label><input type="text" name="pet2Weight"></div>
+        <div class="field"><label>Color</label><input type="text" name="pet2Color"></div>
+        <div class="field"><label>Reg. #</label><input type="text" name="pet2Reg"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Vehicle Information</h3>
+      <div class="vehicle-row">
+        <div class="field"><label>Year</label><input type="text" name="veh1Year"></div>
+        <div class="field"><label>Make</label><input type="text" name="veh1Make"></div>
+        <div class="field"><label>Model</label><input type="text" name="veh1Model"></div>
+        <div class="field"><label>Color</label><input type="text" name="veh1Color"></div>
+        <div class="field"><label>License #</label><input type="text" name="veh1License"></div>
+      </div>
+      <div class="vehicle-row">
+        <div class="field"><label>Year</label><input type="text" name="veh2Year"></div>
+        <div class="field"><label>Make</label><input type="text" name="veh2Make"></div>
+        <div class="field"><label>Model</label><input type="text" name="veh2Model"></div>
+        <div class="field"><label>Color</label><input type="text" name="veh2Color"></div>
+        <div class="field"><label>License #</label><input type="text" name="veh2License"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Parking Space / Stall</label><input type="text" name="parkingSpace" value="N/A"></div>
+        <div class="field"><label>Storage Space</label><input type="text" name="storageSpace" value="#1"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Emergency Contact</h3>
+      <div class="row">
+        <div class="field wide"><label>Name</label><input type="text" name="emergName"></div>
+        <div class="field"><label>Phone</label><input type="tel" name="emergPhone"></div>
+        <div class="field"><label>Relation</label><input type="text" name="emergRelation"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Doctor</label><input type="text" name="doctorName"></div>
+        <div class="field"><label>Phone</label><input type="tel" name="doctorPhone"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Hospital</label><input type="text" name="hospitalName"></div>
+        <div class="field"><label>Phone</label><input type="tel" name="hospitalPhone"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Lender Bank, Mortgage Holder <span style="font-weight:normal; text-transform:none; font-size:11px;">(as required by the WCA)</span></h3>
+      <div class="row">
+        <div class="field wide"><label>Name</label><input type="text" name="lenderName" value="Lakeview"></div>
+        <div class="field"><label>Phone</label><input type="tel" name="lenderPhone" value="1-800-509-0183"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Address</label><input type="text" name="lenderAddress" value="Lakeview Loan Servicing, LLC, P.O. Box 60509, City of Industry, CA 91716-0509"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><label>Additional Information</label><textarea name="lenderAdditional"></textarea></div>
+      </div>
+    </div>
+
+    <!-- Walkthrough scheduling -->
+    <div class="walkthrough">
+      <h3>Move-In Walk-Through with Condo Board</h3>
+      <p>Please confirm your move-in date and propose a few time windows, on or before that date, when you're available to walk through the unit with a member of the Condo Board.</p>
+
+      <div class="move-in-row">
+        <div class="field narrow" style="max-width:220px;">
+          <label for="moveInDate">Move-in date</label>
+          <input type="date" id="moveInDate" name="moveInDate">
+        </div>
+      </div>
+
+      <label style="display:block; margin-bottom:8px;">Proposed walk-through windows <span class="opt">(add as many as you'd like)</span></label>
+      <div class="slot-list" id="slotList">
+        <div class="slot">
+          <span class="slot-label">Option 1</span>
+          <input type="date" name="slotDate1">
+          <input type="time" name="slotStart1">
+          <span style="font-size:12px; color:var(--muted);">to</span>
+          <input type="time" name="slotEnd1">
+        </div>
+        <div class="slot">
+          <span class="slot-label">Option 2</span>
+          <input type="date" name="slotDate2">
+          <input type="time" name="slotStart2">
+          <span style="font-size:12px; color:var(--muted);">to</span>
+          <input type="time" name="slotEnd2">
+        </div>
+      </div>
+      <button type="button" class="add-slot" id="addSlotBtn">+ Add another time window</button>
+      <div class="note">All proposed windows should fall on or before the move-in date above.</div>
+    </div>
+
+    <div class="footer-actions">
+      <span class="status-msg" id="statusMsg"></span>
+      <button type="submit" class="submit-btn">Send to Ewing &amp; Clark</button>
+    </div>
+
+  </form>
+
+  <footer class="legal">
+    <div class="firm">Ewing &amp; Clark, Inc.</div>
+    <div>2110 Western Avenue</div>
+  </footer>
+
+</div>
+
+<script>
+let slotCount = 2;
+
+document.getElementById('addSlotBtn').addEventListener('click', function(){
+  slotCount++;
+  const list = document.getElementById('slotList');
+  const div = document.createElement('div');
+  div.className = 'slot';
+  div.innerHTML = `
+    <span class="slot-label">Option ${slotCount}</span>
+    <input type="date" name="slotDate${slotCount}">
+    <input type="time" name="slotStart${slotCount}">
+    <span style="font-size:12px; color:var(--muted);">to</span>
+    <input type="time" name="slotEnd${slotCount}">
+    <button type="button" class="remove-slot" title="Remove">&times;</button>
+  `;
+  div.querySelector('.remove-slot').addEventListener('click', function(){
+    div.remove();
+  });
+  list.appendChild(div);
+});
+
+function fmtDate(val){
+  if(!val) return '';
+  const [y,m,d] = val.split('-');
+  return `${m}/${d}/${y}`;
+}
+function fmtTime(val){
+  if(!val) return '';
+  let [h,m] = val.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if(h === 0) h = 12;
+  return `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+document.getElementById('residentForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = {};
+  fd.forEach((v,k) => { if(v) data[k] = v; });
+
+  const lines = [];
+  lines.push('MARA BELLA CONDOMINIUM — HOMEOWNER/RESIDENT INFORMATION');
+  lines.push('**Confidential**');
+  lines.push('');
+  lines.push(`Date: ${fmtDate(data.date) || ''}    Unit No.: ${data.unitNo || ''}`);
+  lines.push('');
+
+  lines.push('OWNER INFORMATION');
+  if(data.ownerName1) lines.push(`Name: ${data.ownerName1}    Phone #1: ${data.ownerPhone1 || ''}`);
+  if(data.ownerName2) lines.push(`Name: ${data.ownerName2}    Phone #2: ${data.ownerPhone2 || ''}`);
+  if(data.ownerAddress) lines.push(`Address: ${data.ownerAddress}    Phone #3: ${data.ownerPhone3 || ''}`);
+  if(data.ownerPhone4) lines.push(`Phone #4: ${data.ownerPhone4}`);
+  if(data.ownerEmail1 || data.ownerEmail2) lines.push(`Email: ${data.ownerEmail1 || ''}    Email: ${data.ownerEmail2 || ''}`);
+  lines.push('');
+
+  lines.push('RENTER INFORMATION');
+  if(data.renterName1) lines.push(`Name: ${data.renterName1}    Home Phone: ${data.renterHomePhone || ''}`);
+  if(data.renterName2) lines.push(`Name: ${data.renterName2}    Work Phone: ${data.renterWorkPhone1 || ''}`);
+  if(data.renterAddress) lines.push(`Address: ${data.renterAddress}    Work Phone: ${data.renterWorkPhone2 || ''}`);
+  if(data.renterEmail) lines.push(`Email: ${data.renterEmail}`);
+  if(data.renterCellPhone || data.renterFax) lines.push(`Cell Phone: ${data.renterCellPhone || ''}    Fax: ${data.renterFax || ''}`);
+  lines.push('');
+
+  if(data.pet1Name || data.pet2Name){
+    lines.push('PET INFORMATION');
+    if(data.pet1Name) lines.push(`Name: ${data.pet1Name}  Breed: ${data.pet1Breed||''}  Weight: ${data.pet1Weight||''}  Color: ${data.pet1Color||''}  Reg.#: ${data.pet1Reg||''}`);
+    if(data.pet2Name) lines.push(`Name: ${data.pet2Name}  Breed: ${data.pet2Breed||''}  Weight: ${data.pet2Weight||''}  Color: ${data.pet2Color||''}  Reg.#: ${data.pet2Reg||''}`);
+    lines.push('');
+  }
+
+  if(data.veh1Make || data.veh2Make || data.parkingSpace || data.storageSpace){
+    lines.push('VEHICLE INFORMATION');
+    if(data.veh1Make) lines.push(`Year: ${data.veh1Year||''}  Make: ${data.veh1Make}  Model: ${data.veh1Model||''}  Color: ${data.veh1Color||''}  License#: ${data.veh1License||''}`);
+    if(data.veh2Make) lines.push(`Year: ${data.veh2Year||''}  Make: ${data.veh2Make}  Model: ${data.veh2Model||''}  Color: ${data.veh2Color||''}  License#: ${data.veh2License||''}`);
+    if(data.parkingSpace || data.storageSpace) lines.push(`Parking Space/Stall: ${data.parkingSpace||''}    Storage Space: ${data.storageSpace||''}`);
+    lines.push('');
+  }
+
+  if(data.emergName || data.doctorName || data.hospitalName){
+    lines.push('EMERGENCY CONTACT');
+    if(data.emergName) lines.push(`Name: ${data.emergName}    Phone: ${data.emergPhone||''}    Relation: ${data.emergRelation||''}`);
+    if(data.doctorName) lines.push(`Doctor: ${data.doctorName}    Phone: ${data.doctorPhone||''}`);
+    if(data.hospitalName) lines.push(`Hospital: ${data.hospitalName}    Phone: ${data.hospitalPhone||''}`);
+    lines.push('');
+  }
+
+  if(data.lenderName || data.lenderAddress || data.lenderAdditional){
+    lines.push('LENDER BANK, MORTGAGE HOLDER (as required by the WCA)');
+    if(data.lenderName) lines.push(`Name: ${data.lenderName}    Phone: ${data.lenderPhone||''}`);
+    if(data.lenderAddress) lines.push(`Address: ${data.lenderAddress}`);
+    if(data.lenderAdditional) lines.push(`Additional Information: ${data.lenderAdditional}`);
+    lines.push('');
+  }
+
+  lines.push('MOVE-IN WALK-THROUGH');
+  lines.push(`Move-in date: ${fmtDate(data.moveInDate) || 'Not provided'}`);
+  let slotNum = 1;
+  let anySlot = false;
+  for(let i=1;i<=slotCount;i++){
+    const d = data[`slotDate${i}`];
+    const s = data[`slotStart${i}`];
+    const en = data[`slotEnd${i}`];
+    if(d || s || en){
+      anySlot = true;
+      lines.push(`  Option ${slotNum}: ${fmtDate(d) || '(date tbd)'}, ${fmtTime(s) || '?'} – ${fmtTime(en) || '?'}`);
+      slotNum++;
+    }
+  }
+  if(!anySlot) lines.push('  No time windows proposed yet.');
+
+  const body = lines.join('\n');
+  const subject = `Mara Bella Resident Info — Unit ${data.unitNo || ''} — ${data.renterName1 || data.ownerName1 || ''}`;
+  const mailto = `mailto:vmeyers@ewingandclark.com?cc=ksulenes@gmail.com&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  const statusEl = document.getElementById('statusMsg');
+  if(mailto.length > 1900){
+    // Mailto links have practical length limits in some clients; warn and still attempt.
+    statusEl.textContent = 'Opening your email app — if it looks empty, copy details manually.';
+    statusEl.className = 'status-msg error';
+  } else {
+    statusEl.textContent = 'Opening your email app to send to vmeyers@ewingandclark.com (cc: ksulenes@gmail.com)…';
+    statusEl.className = 'status-msg';
+  }
+  window.location.href = mailto;
+});
+</script>
+
+</body>
+</html>
